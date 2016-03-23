@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html>
+<head>
+<p align="right">{{user.name}}{{user.}}
+<a href="{% url 'CRM:logout' %}">(Logout)</a>
+</p>
+<title>Semester TimeTable</title>
+<style>
+#wrap {
+  width: 100%; /* Spans the width of the page */
+  height: 50px; 
+  margin: 0; /* Ensures there is no space between sides of the screen and the menu */
+  z-index: 99; /* Makes sure that your menu remains on top of other page elements */
+  position: relative; 
+  background-color: #366b82;
+  }
+
+  .navbar {
+  height: 50px;
+        padding: 0;
+  margin: 0;
+  position: absolute; /* Ensures that the menu doesn’t affect other elements */
+  border-right: 1px solid #54879d; 
+  }
+
+  .navbar li  {
+      height: auto;
+      width: 150px;  /* Each menu item is 150px wide */
+      float: left;  /* This lines up the menu items horizontally */
+      text-align: center;  /* All text is placed in the center of the box */
+      list-style: none;  /* Removes the default styling (bullets) for the list */
+      font: normal bold 12px/1.2em Arial, Verdana, Helvetica;  
+      padding: 0;
+      margin: 0;
+      background-color: #366b82;
+                        } 
+
+    .navbar a {             
+    padding: 18px 0;  /* Adds a padding on the top and bottom so the text appears centered vertically */
+    border-left: 1px solid #54879d; /* Creates a border in a slightly lighter shade of blue than the background.  Combined with the right border, this creates a nice effect. */
+    border-right: 1px solid #1f5065; /* Creates a border in a slightly darker shade of blue than the background.  Combined with the left border, this creates a nice effect. */
+    text-decoration: none;  /* Removes the default hyperlink styling. */
+    color: white; /* Text color is white */
+    display: block;
+    }
+    .navbar li ul   {
+    display: none;  /* Hides the drop-down menu */
+    height: auto;                 
+    margin: 0; /* Aligns drop-down box underneath the menu item */
+    padding: 0; /* Aligns drop-down box underneath the menu item */     
+    }       
+
+.navbar li:hover ul   {
+                        display: block; /* Displays the drop-down box when the menu item is hovered over */
+                        }
+
+                        .navbar li ul li a  {
+    border-left: 1px solid #1f5065; 
+    border-right: 1px solid #1f5065; 
+    border-top: 1px solid #74a3b7; 
+    border-bottom: 1px solid #1f5065; 
+    }
+      
+</style>
+<style type="text/css">
+  table {
+  border-collapse: separate;
+  border-spacing: 0;
+}
+th,
+td {
+  padding: 10px 15px;
+}
+thead {
+  background: #395870;
+  color: #fff;
+}
+tbody tr:nth-child(even) {
+  background: #f0f0f2;
+}
+td {
+  border-bottom: 1px solid #cecfd5;
+  border-right: 1px solid #cecfd5;
+}
+td:first-child {
+  border-left: 1px solid #cecfd5;
+}
+</style>
+</head>
+<body>
+{% if role == 1 %}
+<div id="wrap">
+      <ul class="navbar">
+         <li><a href="{% url 'CRM:index_stu' %}">Home</a></li>
+       <li><a href="#">View Timetable</a>
+        <ul>
+           <li><a href="{% url 'CRM:time_table' %}">Semester TimeTable</a></li>
+           <li><a href="{% url 'CRM:extra_table' %}">Extra Class</a></li>
+        </ul>        
+      </li>
+      </ul>
+
+</div>
+{% else %}
+
+      <div id="wrap">
+      <ul class="navbar">
+         <li><a href="{% url 'CRM:index' %}">Home</a></li>
+       <li><a href="#">View Timetable</a>
+        <ul>
+           <li><a href="{% url 'CRM:time_table' %}">Semester TimeTable</a></li>
+           <li><a href="{% url 'CRM:extra_table' %}">Extra Class</a></li>
+        </ul>         
+       </li>
+       <li><a href="#">Class Booking</a>
+        <ul>
+           <li><a href="{% url 'CRM:booksem' %}" >For Semester</a></li>
+           <li><a href="{% url 'CRM:BookExtra' %}">For Extra Class</a></li>
+        </ul>         
+       </li>
+        <li><a href="#">Booking History</a>
+        <ul>
+          <li><a href="{% url 'CRM:sem_his' %}">Semester Class </a></li>
+          <li><a href="{% url 'CRM:book_his' %}">Extra Class </a></li>
+
+        </ul>
+      </li>
+      </ul>
+</div>
+{%endif%}
+<br>
+<center><h2><b>WEEKLY TIME TABLE</b></h2></center>
+<br>
+
+
+
+<center><table>
+  
+  
+  <thead>
+
+    <tr>
+      <th scope="col">Day</th>
+     <th scope="col">Venue</th>
+      <th scope="col">8AM-9AM</th>
+<th scope="col">9AM-10AM</th>
+<th scope="col">10AM-11AM</th>
+<th scope="col">11AM-12PM</th>
+<th scope="col">12PM-1PM</th>
+<th scope="col">1PM-2PM</th>
+<th scope="col">2PM-3PM</th>
+<th scope="col">3PM-4PM</th>
+<th scope="col">4PM-5PM</th>
+
+    </tr>
+  </thead>
+<tbody>
+{% for d in timeTable %}
+  {% for ts in d %}
+    <tr>
+      {% if forloop.counter == 1 %}
+        <td rowspan="{{ d|length }}">
+          {% if ts.day == 0 %}
+            Monday
+          {% elif ts.day == 1 %}
+            Tuesday
+          {% elif ts.day == 2 %}
+            Wednesday
+          {% elif ts.day == 3 %}
+            Thursday
+          {% elif ts.day == 4 %}
+            Friday
+          {% elif ts.day == 5 %}
+            Saturday
+          {% elif ts.day == 6 %}
+            Sunday
+          {% endif %}
+        </td>
+      {% endif %}
+      <td>{{ts.roomno}}</td>
+      <td>{{ts.time_slot1}}</td>
+      <td>{{ts.time_slot2}}</td>
+      <td>{{ts.time_slot3}}</td>
+      <td>{{ts.time_slot4}}</td>
+      <td>{{ts.time_slot5}}</td>
+      <td>{{ts.time_slot6}}</td>
+      <td>{{ts.time_slot7}}</td>
+      <td>{{ts.time_slot8}}</td>
+      <td>{{ts.time_slot9}}</td>
+    </tr>
+  {% endfor %}
+{% endfor %}
+</tbody>
+</table></center> 
+
+
+
+
+
+
+
+
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!--<html>
+<style type="text/css">
+  table {
+  border-collapse: separate;
+  border-spacing: 0;
+}
+th,
+td {
+  padding: 10px 15px;
+}
+thead {
+  background: #395870;
+  color: #fff;
+}
+tbody tr:nth-child(even) {
+  background: #f0f0f2;
+}
+td {
+  border-bottom: 1px solid #cecfd5;
+  border-right: 1px solid #cecfd5;
+}
+td:first-child {
+  border-left: 1px solid #cecfd5;
+}
+</style>
+
+
+<table>
+  <caption>WEEKLY TIME TABLE</caption>
+  <thead>
+    <tr>
+      <th scope="col">Day</th>
+     <th scope="col">Venue</th>
+      <th scope="col">8AM-9AM</th>
+<th scope="col">9AM-10AM</th>
+<th scope="col">10AM-11AM</th>
+<th scope="col">11AM-12PM</th>
+<th scope="col">12PM-1PM</th>
+<th scope="col">1PM-2PM</th>
+<th scope="col">2PM-3PM</th>
+<th scope="col">3PM-4PM</th>
+<th scope="col">4PM-5PM</th>
+
+    </tr>
+  </thead>
+<tbody>
+{% for d in timeTable %}
+  {% for ts in d %}
+    <tr>
+      {% if forloop.counter == 1 %}
+        <td rowspan="{{ d|length }}">
+          {% if ts.day == 0 %}
+            Monday
+          {% elif ts.day == 1 %}
+            Tuesday
+          {% elif ts.day == 2 %}
+            Wednesday
+          {% elif ts.day == 3 %}
+            Thursday
+          {% elif ts.day == 4 %}
+            Friday
+          {% elif ts.day == 5 %}
+            Saturday
+          {% elif ts.day == 6 %}
+            Sunday
+          {% endif %}
+        </td>
+      {% endif %}
+      <td>{{ts.roomno}}</td>
+      <td>{{ts.time_slot1}}</td>
+      <td>{{ts.time_slot2}}</td>
+      <td>{{ts.time_slot3}}</td>
+      <td>{{ts.time_slot4}}</td>
+      <td>{{ts.time_slot5}}</td>
+      <td>{{ts.time_slot6}}</td>
+      <td>{{ts.time_slot7}}</td>
+      <td>{{ts.time_slot8}}</td>
+      <td>{{ts.time_slot9}}</td>
+    </tr>
+  {% endfor %}
+{% endfor %}
+</tbody>
+</table> -->

@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html>
+<head>
+<p align="right">{{user.name}}{{user.}}
+<a href="{% url 'CRM:logout' %}">(Logout)</a>
+</p>
+<title>Semester Booking</title>
+<style>
+#wrap {
+width: 100%; /* Spans the width of the page */
+height: 50px; 
+margin: 0; /* Ensures there is no space between sides of the screen and the menu */
+z-index: 99; /* Makes sure that your menu remains on top of other page elements */
+position: relative; 
+background-color: #366b82;
+}
+
+.navbar {
+height: 50px;
+  padding: 0;
+margin: 0;
+position: absolute; /* Ensures that the menu doesn’t affect other elements */
+border-right: 1px solid #54879d; 
+}
+
+.navbar li  {
+height: auto;
+width: 150px;  /* Each menu item is 150px wide */
+float: left;  /* This lines up the menu items horizontally */
+text-align: center;  /* All text is placed in the center of the box */
+list-style: none;  /* Removes the default styling (bullets) for the list */
+font: normal bold 12px/1.2em Arial, Verdana, Helvetica;  
+padding: 0;
+margin: 0;
+background-color: #366b82;
+                  } 
+
+.navbar a {             
+padding: 18px 0;  /* Adds a padding on the top and bottom so the text appears 
+
+centered vertically */
+border-left: 1px solid #54879d; /* Creates a border in a slightly lighter shade of blue 
+
+than the background.  Combined with the right border, this creates a nice effect. */
+border-right: 1px solid #1f5065; /* Creates a border in a slightly darker shade of blue 
+
+than the background.  Combined with the left border, this creates a nice effect. */
+text-decoration: none;  /* Removes the default hyperlink styling. */
+color: white; /* Text color is white */
+display: block;
+}
+.navbar li ul   {
+display: none;  /* Hides the drop-down menu */
+height: auto;                 
+margin: 0; /* Aligns drop-down box underneath the menu item */
+padding: 0; /* Aligns drop-down box underneath the menu item */     
+}       
+
+.navbar li:hover ul   {
+                  display: block; /* Displays the drop-down box when the menu item is 
+
+hovered over */
+                  }
+
+                  .navbar li ul li a  {
+border-left: 1px solid #1f5065; 
+border-right: 1px solid #1f5065; 
+border-top: 1px solid #74a3b7; 
+border-bottom: 1px solid #1f5065; 
+}
+
+
+.select-style {
+padding: 0;
+margin: 0;
+border: 1px solid #ccc;
+width: 120px;
+border-radius: 3px;
+overflow: hidden;
+background-color: #fff;
+
+background: #fff url("http://www.scottgood.com/jsg/blog.nsf/images/arrowdown.gif") 
+
+no-repeat 90% 50%;
+}
+
+.select-style select {
+padding: 5px 8px;
+width: 130%;
+border: none;
+box-shadow: none;
+background-color: transparent;
+background-image: none;
+-webkit-appearance: none;
+ -moz-appearance: none;
+      appearance: none;
+}
+
+.select-style select:focus {
+outline: none;
+}
+
+</style>
+
+
+<style type="text/css">
+fieldset.date { 
+margin: 0; 
+padding: 0; 
+padding-left: 20px; 
+padding-bottom: .5em; 
+display: block; 
+border: none; 
+} 
+
+fieldset.date legend { 
+margin: 0; 
+padding: 0; 
+margin-top: .25em; 
+font-size: 100%; 
+} 
+
+
+fieldset.date label { 
+position: absolute; 
+top: -20em; 
+left: -200em; 
+} 
+
+fieldset.date select { 
+margin: 0; 
+padding: 0; 
+font-size: 100%; 
+display: inline; 
+} 
+
+span.inst { 
+font-size: 75%; 
+color: blue; 
+padding-left: .25em; 
+} 
+
+
+fieldset.date select:active, 
+fieldset.date select:focus, 
+fieldset.date select:hover 
+{ 
+border-color: gray; 
+background-color: lightyellow; 
+} 
+
+</style>
+
+<style>
+.button {
+background-color: #b9f6ca; /* Green */
+border: none;
+color: #b9f6ca;
+padding: 10px 32px;
+text-align: center;
+text-decoration: none;
+display: inline-block;
+font-size: 16px;
+margin: 4px 2px;
+-webkit-transition-duration: 0.4s; /* Safari */
+transition-duration: 0.4s;
+cursor: pointer;
+}
+
+.button1 {
+background-color: white; 
+color: black; 
+border: 2px solid #4CAF50;
+}
+
+.button1:hover {
+background-color: #4CAF50;
+color: white;
+}
+
+
+</style>
+
+
+<style type="text/css">
+.form-style-1 {
+    margin:10px auto;
+    max-width: 400px;
+    padding: 20px 12px 10px 20px;
+    font: 13px "Lucida Sans Unicode", "Lucida Grande", sans-serif;
+}
+.form-style-1 li {
+    padding: 0;
+    display: block;
+    list-style: none;
+    margin: 10px 0 0 0;
+}
+.form-style-1 label{
+    margin:0 0 3px 0;
+    padding:0px;
+    display:block;
+    font-weight: bold;
+}
+.form-style-1 input[type=text], 
+.form-style-1 input[type=date],
+.form-style-1 input[type=datetime],
+.form-style-1 input[type=number],
+.form-style-1 input[type=search],
+.form-style-1 input[type=time],
+.form-style-1 input[type=url],
+.form-style-1 input[type=email],
+textarea, 
+select{
+    box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    border:1px solid #BEBEBE;
+    padding: 7px;
+    margin:0px;
+    -webkit-transition: all 0.30s ease-in-out;
+    -moz-transition: all 0.30s ease-in-out;
+    -ms-transition: all 0.30s ease-in-out;
+    -o-transition: all 0.30s ease-in-out;
+    outline: none;  
+}
+.form-style-1 input[type=text]:focus, 
+.form-style-1 input[type=date]:focus,
+.form-style-1 input[type=datetime]:focus,
+.form-style-1 input[type=number]:focus,
+.form-style-1 input[type=search]:focus,
+.form-style-1 input[type=time]:focus,
+.form-style-1 input[type=url]:focus,
+.form-style-1 input[type=email]:focus,
+.form-style-1 textarea:focus, 
+.form-style-1 select:focus{
+    -moz-box-shadow: 0 0 8px #88D5E9;
+    -webkit-box-shadow: 0 0 8px #88D5E9;
+    box-shadow: 0 0 8px #88D5E9;
+    border: 1px solid #88D5E9;
+}
+.form-style-1 .field-divided{
+    width: 49%;
+}
+
+.form-style-1 .field-long{
+    width: 50%;
+}
+.form-style-1 .field-select{
+    width: 50%;
+}
+.form-style-1 .field-textarea{
+    height: 100px;
+}
+.form-style-1 input[type=submit], .form-style-1 input[type=button]{
+    background: #4B99AD;
+    padding: 8px 15px 8px 15px;
+    border: none;
+    color: #fff;
+}
+.form-style-1 input[type=submit]:hover, .form-style-1 input[type=button]:hover{
+    background: #4691A4;
+    box-shadow:none;
+    -moz-box-shadow:none;
+    -webkit-box-shadow:none;
+}
+.form-style-1 .required{
+    color:red;
+}
+table {
+    border-collapse: collapse;
+    width: 90%;
+}
+
+th, td {
+    text-align: left;
+    padding: 8px;
+}
+
+tr:nth-child(even){background-color: #f2f2f2}
+
+th {
+    background-color: #4CAF50;
+    color: white;
+}
+</style>
+
+</head>
+<body>
+
+
+
+
+
+
+
+<div id="wrap">
+<ul class="navbar">
+   <li><a href="{% url 'CRM:index' %}">Home</a></li>
+ <li><a href="#">View Timetable</a>
+  <ul>
+     <li><a href="{% url 'CRM:time_table' %}">Semester TimeTable</a></li>
+     <li><a href="{% url 'CRM:extra_table' %}">Extra Class</a></li>
+  </ul>         
+ </li>
+ <li><a href="">Class Booking</a>
+  <ul>
+     <li><a href="{% url 'CRM:booksem' %}" >For Semester</a></li>
+     <li><a href="{% url 'CRM:BookExtra' %}">For Extra Class</a></li>
+  </ul>         
+ </li>
+ <li><a href="#">Booking History</a>
+        <ul>
+          <li><a href="{% url 'CRM:sem_his' %}">Semester Class </a></li>
+          <li><a href="{% url 'CRM:book_his' %}">Extra Class </a></li>
+
+        </ul>
+      </li>
+  
+</ul>
+</div>
+<br>
+
+
+{% if bookingSuccess %}
+<center><p><font color="Green"  size="6">Successfully Booked.</font></p></center>
+{% endif %}
+
+{% if searched == '1' %}
+{% if available == '1' %}
+<ul>
+<center><h1><font> ClassRooms Available</font></h1></center>
+<table>
+<th>Room No</b></th>
+<th>Occupancy</b></th>
+<th>Type</th>
+<th>Time</th>
+<th>Course No</th>
+<th>        </th>
+{% for rm in availRooms %}
+
+
+<tr>
+
+<form action="{% url 'CRM:BookRoom' %}" method="post">
+{% csrf_token %}
+
+</tr>
+<tr>
+<td>{{rm.RoomNo}}</td>
+<td>{{rm.Occupancy}}</td> 
+{% if rm.Type == 1 %}
+<td>Projector</td>
+{% else %}
+<td>Video Conference </td>
+{% endif %}
+<td>{{time}}</td>
+<td>{{CourseNo}}</td>
+<input type="hidden" name="roomno" value="{{rm.RoomNo}}">
+<input type="hidden" name="time" value="{{time}}">
+<input type="hidden" name="day" value="{{day}}">
+<input type="hidden" name="book_for_sem" value="1">
+<input type="hidden" name="courseno" value="{{CourseNo}}"> 
+<td><input type="submit" value="Book">
+<input type="hidden" name="next" value="{{ next }}"></td>
+</form>
+{% endfor %}
+</ul>
+{% else %}
+<marquee><h1>No Rooms available...</h1></marquee>
+{% endif %}
+
+<!---Hiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii -->
+
+
+
+{% else %}
+<br>
+<center><h2><b>SEMESTER CLASS TIMETABLE</b></h2></center>
+<center><form action="{% url 'CRM:booksem' %}" method="post">
+{% csrf_token %}
+<ul class="form-style-1">
+<li><label>Course No <span class="required"></span></label>
+<input type="text" name="courseno"  class="field-long" required />
+
+
+<li>
+        <label>Occupancy</label>
+        <select name="occupancy" class="field-select" required>
+        <option value="" disabled selected>Select</option>
+        <option value="40">Max 40</option>
+        <option value="120">Max 120</option>
+        </select>
+    </li> 
+
+
+    <li>
+        <label>Type of Class</label>
+        <select name="type" class="field-select" required>
+        <option value="" disabled selected>Select</option>
+        <option value="1">Projector</option>
+        <option value="2">Video Conferencing</option>
+        </select>
+    </li>
+
+    <li>
+      <label>Day</label>
+      <select name="day" class="field-select" required>
+      <option value="" disabled selected >Select</option>
+<option value="6">Sunday</option>
+<option value="0">Monday</option> 
+<option value="1">Tuesday</option>
+<option value="2">Wednesday</option>
+<option value="3">Thursday</option>
+<option value="4">Friday</option>
+<option value="5">Saturday</option> 
+</select> 
+  </li>
+
+
+<li>
+      <label>Time</label>
+      <select name="time" class="field-select" required>
+      <option value="" disabled selected >Select</option>
+<option value="8AM-9AM">8AM-9AM</option>
+<option value="9AM-10AM">9AM-10AM</option> 
+<option value="10AM-11AM">10AM-11AM</option>
+<option value="11AM-12PM">11AM-12PM</option>
+<option value="12PM-1PM">12PM-1PM</option>
+<option value="1PM-2PM">1PM-2PM</option>
+<option value="2PM-3PM">2PM-3PM</option>
+<option value="3PM-4PM">3PM-4PM</option>
+<option value="4PM-5PM">4PM-5PM</option> 
+</select> 
+  </li>
+
+
+<li>
+        <input type="submit" value="Submit" />
+        <input type="hidden" name="next" value="{{ next }}">
+</li>
+
+
+</ul>
+</form></center>
+{% endif %}
+
+
+
+
+
+
+</body>
+</html>

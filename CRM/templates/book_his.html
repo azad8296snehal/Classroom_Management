@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html>
+<head>
+<p align="right">{{user.name}}{{user.}}
+<a href="{% url 'CRM:logout' %}">(Logout)</a>
+</p>
+<title>Extra Class History</title>
+<style>
+#wrap {
+  width: 100%; /* Spans the width of the page */
+  height: 50px; 
+  margin: 0; /* Ensures there is no space between sides of the screen and the menu */
+  z-index: 99; /* Makes sure that your menu remains on top of other page elements */
+  position: relative; 
+  background-color: #366b82;
+  }
+
+  .navbar {
+  height: 50px;
+        padding: 0;
+  margin: 0;
+  position: absolute; /* Ensures that the menu doesn’t affect other elements */
+  border-right: 1px solid #54879d; 
+  }
+
+  .navbar li  {
+      height: auto;
+      width: 150px;  /* Each menu item is 150px wide */
+      float: left;  /* This lines up the menu items horizontally */
+      text-align: center;  /* All text is placed in the center of the box */
+      list-style: none;  /* Removes the default styling (bullets) for the list */
+      font: normal bold 12px/1.2em Arial, Verdana, Helvetica;  
+      padding: 0;
+      margin: 0;
+      background-color: #366b82;
+                        } 
+
+    .navbar a {             
+    padding: 18px 0;  /* Adds a padding on the top and bottom so the text appears centered vertically */
+    border-left: 1px solid #54879d; /* Creates a border in a slightly lighter shade of blue than the background.  Combined with the right border, this creates a nice effect. */
+    border-right: 1px solid #1f5065; /* Creates a border in a slightly darker shade of blue than the background.  Combined with the left border, this creates a nice effect. */
+    text-decoration: none;  /* Removes the default hyperlink styling. */
+    color: white; /* Text color is white */
+    display: block;
+    }
+    .navbar li ul   {
+    display: none;  /* Hides the drop-down menu */
+    height: auto;                 
+    margin: 0; /* Aligns drop-down box underneath the menu item */
+    padding: 0; /* Aligns drop-down box underneath the menu item */     
+    }       
+
+.navbar li:hover ul   {
+                        display: block; /* Displays the drop-down box when the menu item is hovered over */
+                        }
+
+                        .navbar li ul li a  {
+    border-left: 1px solid #1f5065; 
+    border-right: 1px solid #1f5065; 
+    border-top: 1px solid #74a3b7; 
+    border-bottom: 1px solid #1f5065; 
+    }
+
+    table {
+    border-collapse: collapse;
+    width: 70%;
+}
+
+th, td {
+    text-align: left;
+    padding: 8px;
+}
+
+tr:nth-child(even){background-color: #f2f2f2}
+
+th {
+    background-color: #4CAF50;
+    color: white;
+}
+      
+</style>
+</head>
+<body>
+{% if role == 1 %}
+    
+<div id="wrap">
+      <ul class="navbar">
+      
+         <li><a href="{% url 'CRM:index_stu' %}">Home</a></li>
+       <li><a href="#">View Timetable</a>
+        <ul>
+           <li><a href="{% url 'CRM:time_table' %}">Semester TimeTable</a></li>
+           <li><a href="{% url 'CRM:extra_table' %}">Extra Class</a></li>
+        </ul>         
+       </li>
+        
+        
+
+      </ul>
+</div>
+{% else %}
+
+<div id="wrap">
+      <ul class="navbar">
+         <li><a href="{% url 'CRM:index' %}">Home</a></li>
+       <li><a href="#">View Timetable</a>
+        <ul>
+           <li><a href="{% url 'CRM:time_table' %}">Semester TimeTable</a></li>
+           <li><a href="{% url 'CRM:extra_table' %}">Extra Class</a></li>
+        </ul>         
+       </li>
+       <li><a href="#">Class Booking</a>
+        <ul>
+           <li><a href="{% url 'CRM:booksem' %}" >For Semester</a></li>
+           <li><a href="{% url 'CRM:BookExtra' %}">For Extra Class</a></li>
+        </ul>         
+       </li>
+       <li><a href="#">Booking History</a>
+        <ul>
+          <li><a href="{% url 'CRM:sem_his' %}">Semester Class </a></li>
+          <li><a href="{% url 'CRM:book_his' %}">Extra Class </a></li>
+
+        </ul>
+      </li>
+      </ul>
+</div>
+{%endif%}
+
+<br><br>
+{% if scs_msg != "" %}
+<center><font color="green"><h2>{{scs_msg}}</h2></font></center>
+{% endif %}
+<center><h2><b>EXTRA CLASS HISTORY</b></h2></center>
+
+<center>
+{% if allbookings|length %}
+<table>
+<tr>
+    <th>RoomNo</th>
+    <th>CourseNo</th>
+    <th>Date</th>
+    <th>Time</th>
+    <th>Class Strength</th>
+    <th>Class Type</th>
+    <th></th>
+  </tr>
+{%for b in allbookings%}
+<tr><td>
+	{{b.room.RoomNo}}
+</td>
+<td>{{b.CourseNo}}</td>
+<td>{{b.date}}</td>
+<td>{{b.time}}</td>
+<td>{{b.room.Occupancy}}</td>
+{% if b.room.Type == 1 %}
+<td>Projector</td>
+{% else %}
+<td>Video Conferencing</td>
+{% endif %}
+<td>
+<form method="POST">
+{%csrf_token%}
+<input type="submit" value="Cancel Booking">
+<input type="hidden" value="{{b.time}}" name="time">
+<input type="hidden" value="{{b.room.RoomNo}}" name="roomno">
+</form></td>
+
+</tr>
+{%endfor%}
+</table>
+{% else %}
+<h3>No booking to show...</h3>
+{% endif %}
+</center>
+
+
+</body>
+</html>
+
